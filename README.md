@@ -43,23 +43,30 @@ src/
     │
     └── resources/
         ├── Form.xlsx                     # Test data in Excel format
+        ├── referenceNumber.txt           # Generated reference numbers
         └── log4j2.xml                    # Logging configuration
 ```
 
+## Data Management
 
-### Key Components:
+### Excel Data Reading
+- Test data is managed through Excel files using Apache POI
+- `Form.xlsx` contains two sheets:
+  - Sheet1: First form data (name, email, phone etc.)
+  - Sheet2: Second form data (company details, tax info)
+- ExcelReader utility provides methods to read data from specific sheets
 
+### Reference Number Management
+- After successful form submission, reference numbers are captured
+- FileWriter utility saves reference numbers to `referenceNumber.txt`
+- Each reference number is stored with timestamp for tracking
+- File is automatically created in resources directory if not exists
+
+### Project Components
 - **pages/**: Page Object Models for each web page
 - **tests/**: Test classes containing test scenarios
 - **utilities/**: Helper classes for common operations
 - **resources/**: Configuration files and test data
-
-## Data-Driven Testing
-
-The project uses Excel files for test data management:
-- Test data is read from `Form.xlsx` using Apache POI
-- Each row represents a test case
-- Columns contain form field values (name, email, phone etc.)
 
 ## Logging
 
@@ -72,14 +79,15 @@ The project uses Log4j2 for logging:
 
 - Page Object Model design pattern
 - Data-driven testing with Excel integration
+- FileWriter utility saves txt file
 - Detailed logging with Log4j2
 - Reusable helper methods
 - Configurable test parameters
 
-## Running the Tests
+## Running Tests
 
 To run the tests, use the following command:
 
-```
-mvn test
+```bash
+mvn clean test
 ```

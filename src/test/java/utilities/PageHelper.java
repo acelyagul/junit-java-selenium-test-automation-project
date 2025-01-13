@@ -123,18 +123,15 @@ public class PageHelper {
 
     public static void acceptCookieIfExists() {
         try {
-            // Önce cookie container'ın yüklenmesini bekle
             WebDriverWait wait = new WebDriverWait(Driver.getDriver(), Duration.ofSeconds(5));
             wait.until(ExpectedConditions.presenceOfElementLocated(
                 By.cssSelector(".cookie.active")));
             
-            // Kabul et butonunu bul ve tıkla
             WebElement cookieAccept = Driver.getDriver().findElement(
                 By.cssSelector("button.button.button-primary-light.size\\:large.accept-cookie-btn"));
             
             if (cookieAccept != null && cookieAccept.isDisplayed()) {
                 LoggerUtil.info("Cookie popup'ı bulundu, kabul ediliyor");
-                // JavaScript ile tıklama yap
                 ((JavascriptExecutor) Driver.getDriver())
                     .executeScript("arguments[0].click();", cookieAccept);
                 waitForSeconds(1);
@@ -155,6 +152,20 @@ public class PageHelper {
             throw e;
         }
     }
+
+    public static void forceSendKeys(WebElement element, String text) {
+        try {
+            waitForElementVisible(element);
+            element.clear();
+            ((JavascriptExecutor) Driver.getDriver())
+                .executeScript("arguments[0].value = arguments[1]", element, text);
+            LoggerUtil.info("Text force entered with JS: " + text);
+        } catch (Exception e) {
+            LoggerUtil.error("Error force sending keys: " + e.getMessage());
+            throw e;
+        }
+    }
+
 
     public static void selectByVisibleText(WebElement element, String text) {
         try {

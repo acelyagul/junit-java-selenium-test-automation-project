@@ -20,33 +20,36 @@ public class PaymentTest extends TestBase {
         HomePage homePage = new HomePage();
         PageHelper.waitForElementVisible(homePage.getMainTitle());
 
-        assertTrue("Main title cannot be displayed", homePage.isMainTitleDisplayed());
-        assertTrue("Subheadings could not be verified", homePage.validateSubTitles());
+        assertTrue("Main title is not visible", homePage.isMainTitleDisplayed());
+        assertTrue("Subtitles validation failed", homePage.validateSubTitles());
 
         homePage.navigateToLinkPayment();
         LinkPaymentPage linkPaymentPage = new LinkPaymentPage();
 
-        try {
-            Object[][] testData = ExcelReader.getTestData(
-                Config.EXCEL_PATH, 
-                Config.EXCEL_SHEET_NAME
-            );
+        Object[][] firstFormData = ExcelReader.getTestData(Config.EXCEL_PATH, Config.EXCEL_SHEET_NAME);
+        
+        linkPaymentPage.fillApplicationForm(
+            firstFormData[0][0].toString(),
+            firstFormData[0][1].toString(),
+            firstFormData[0][2].toString(),
+            firstFormData[0][3].toString(),
+            firstFormData[0][4].toString(),
+            firstFormData[0][5].toString()
+        );
 
-            linkPaymentPage.fillApplicationForm(
-                testData[0][0].toString(), 
-                testData[0][1].toString(), 
-                testData[0][2].toString(), 
-                testData[0][3].toString(), 
-                testData[0][4].toString(), 
-                testData[0][5].toString()  
-            );
+        linkPaymentPage.submitForm();
+        PageHelper.waitForSeconds(2);
 
-            linkPaymentPage.submitForm();
-
-
-        } catch (Exception e) {
-            logger.error("Error while filling out the form: " + e.getMessage());
-            throw e;
-        }
+        Object[][] secondFormData = ExcelReader.getTestData(Config.EXCEL_PATH, Config.SECOND_FORM_SHEET_NAME);
+        
+        linkPaymentPage.fillSecondForm(
+            secondFormData[0][0].toString(),
+            secondFormData[0][1].toString(), 
+            secondFormData[0][2].toString(), 
+            secondFormData[0][3].toString()  
+        );
+        linkPaymentPage.submitLastForm();
+        
+        linkPaymentPage.verifyAndSaveReferenceNumber();
     }
 } 

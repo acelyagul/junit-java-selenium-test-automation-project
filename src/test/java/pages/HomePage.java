@@ -80,7 +80,7 @@ public class HomePage extends BasePage {
             WebElement linkButton = wait.until(ExpectedConditions.elementToBeClickable(linkPaymentButton));
             PageHelper.clickElement(linkButton);
             
-            if (!PageHelper.verifyURLContains("/link-payment")) {
+            if (!PageHelper.verifyURLContains("/linkle-odeme")) {
                 Driver.getDriver().get(Config.LINK_PAYMENT_URL);
             }
             

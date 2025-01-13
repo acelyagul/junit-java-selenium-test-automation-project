@@ -15,7 +15,10 @@ logs/
 
 # Excel files
 *.xlsx
-!src/test/resources/*.xlsx
+!src/test/resources/Form.xlsx
+
+# Reference number file
+src/test/resources/referenceNumber.txt
 
 # Package Files
 *.jar
